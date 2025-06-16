@@ -1,0 +1,43 @@
+<resources>
+    //String de GestionarReservas
+    <string name="app_name" translatable="false">ReserBar</string>
+    <string name="titulo_gestionar_reservas">Reservas Realizadas</string>
+    <string name="volver">Volver</string>
+    <string name="sin_reservas">No hay reservas registradas.</string>
+    <string name="etiqueta_mesa">Mesa:</string>
+    <string name="etiqueta_fecha">Fecha:</string>
+    <string name="etiqueta_hora">Hora:</string>
+    <string name="boton_eliminar">Eliminar</string>
+
+    //String de MesaScreen
+    <string name="dialogo_nueva_mesa">Nueva Mesa</string>
+    <string name="dialogo_texto_nombre">Escribe el nombre de la mesa:</string>
+    <string name="dialogo_label_nombre">Nombre de la mesa</string>
+    <string name="dialogo_texto_capacidad">Selecciona cuántas personas pueden sentarse en esta mesa:</string>
+    <string name="boton_crear">Crear</string>
+    <string name="boton_cancelar">Cancelar</string>
+    <string name="titulo_gestion_mesas">Gestión de Mesas</string>
+    <string name="añadir_mesa">Añadir mesa</string>
+    <string name="sin_mesas">No hay mesas registradas.</string>
+    <string name="personas">personas</string>
+
+    //String de ReservaScreen
+    <string name="titulo_reservar_mesa">Reservar Mesa</string>
+    <string name="selecciona_fecha">Selecciona la fecha de tu reserva:</string>
+    <string name="fecha_no_disponible">No hay reservas disponibles para esa fecha.</string>
+    <string name="fecha_seleccionada">Has seleccionado:</string>
+    <string name="label_num_personas">¿Para cuántas personas?</string>
+    <string name="mesas_disponibles">Mesas disponibles:</string>
+    <string name="no_mesas_capacidad">No hay mesas con esa capacidad.</string>
+    <string name="mesa">Mesa</string>
+    <string name="capacidad">Capacidad</string>
+    <string name="reservar_esta_mesa">Reservar esta mesa</string>
+    <string name="no_fecha_seleccionada">No has seleccionado ninguna fecha aún.</string>
+    <string name="selecciona_hora">Selecciona una hora</string>
+    <string name="no_horas_disponibles">No hay horas disponibles para esta mesa.</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="toast_confirmacion_reserva">Reserva confirmada para las %1$s en la mesa %2$s</string>
+
+
+
+</resources>
