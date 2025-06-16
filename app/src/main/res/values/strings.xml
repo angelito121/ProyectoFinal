@@ -37,6 +37,7 @@
     <string name="no_horas_disponibles">No hay horas disponibles para esta mesa.</string>
     <string name="cancelar">Cancelar</string>
     <string name="toast_confirmacion_reserva">Reserva confirmada para las %1$s en la mesa %2$s</string>
+    <string name="etiqueta_cliente">Cliente:</string>
 
 
 

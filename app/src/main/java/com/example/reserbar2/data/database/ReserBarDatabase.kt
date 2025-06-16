@@ -9,7 +9,7 @@ import com.example.reserbar2.data.dao.ReservaDao
 import com.example.reserbar2.data.model.Reserva
 import com.example.reserbar2.data.model.Mesa
 
-@Database(entities = [Reserva::class, Mesa::class], version = 1, exportSchema = false)
+@Database(entities = [Reserva::class, Mesa::class], version = 2, exportSchema = false)
 abstract class ReserBarDatabase : RoomDatabase() {
 
     abstract fun ReservaDao(): ReservaDao

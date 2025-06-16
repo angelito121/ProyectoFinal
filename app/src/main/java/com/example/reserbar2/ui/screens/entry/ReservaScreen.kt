@@ -44,6 +44,7 @@ fun ReservaScreen(
     val reservas by reservaViewModel.reservas.collectAsState()
 
     var numPersonas by remember { mutableStateOf("") }
+    var nombreCliente by remember { mutableStateOf("") }
     var mesaSeleccionada by remember { mutableStateOf<Mesa?>(null) }
     var showHoraDialog by remember { mutableStateOf(false) }
 
@@ -57,12 +58,12 @@ fun ReservaScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.titulo_reservar_mesa), color = Color.White) },
+                title = { Text("Reservar Mesa", color = Color.White) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.volver),
+                            contentDescription = "Volver",
                             tint = Color.White
                         )
                     }
@@ -79,78 +80,91 @@ fun ReservaScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.Top
         ) {
-            Text(stringResource(R.string.selecciona_fecha))
-            DatePicker(
-                state = datePickerState,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(500.dp)
+            Text(text = "Introduce tu nombre:")
+            Spacer(modifier = Modifier.height(8.dp))
+            OutlinedTextField(
+                value = nombreCliente,
+                onValueChange = { nombreCliente = it },
+                label = { Text("Nombre del cliente") },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth()
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            selectedDateMillis?.let {
-                val selectedDate = Instant.ofEpochMilli(it)
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDate()
+            if (nombreCliente.isBlank()) {
+                Text(
+                    text = "Por favor, introduce tu nombre antes de continuar.",
+                    color = Color.Red
+                )
+            } else {
+                Text("Selecciona la fecha de tu reserva:")
+                DatePicker(
+                    state = datePickerState,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(500.dp)
+                )
 
-                if (selectedDate <= today) {
-                    Text(
-                        stringResource(R.string.fecha_no_disponible),
-                        color = Color.Red
-                    )
-                } else {
-                    Text("${stringResource(R.string.fecha_seleccionada)} $selectedDate")
+                Spacer(modifier = Modifier.height(16.dp))
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                selectedDateMillis?.let {
+                    val selectedDate = Instant.ofEpochMilli(it)
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate()
 
-                    OutlinedTextField(
-                        value = numPersonas,
-                        onValueChange = { numPersonas = it },
-                        label = { Text(stringResource(R.string.label_num_personas)) },
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                    if (selectedDate <= today) {
+                        Text("No hay reservas disponibles para esa fecha.", color = Color.Red)
+                    } else {
+                        Text("Has seleccionado: $selectedDate")
 
-                    if (cantidad > 0) {
                         Spacer(modifier = Modifier.height(16.dp))
-                        Text(
-                            stringResource(R.string.mesas_disponibles),
-                            style = MaterialTheme.typography.titleMedium
+
+                        OutlinedTextField(
+                            value = numPersonas,
+                            onValueChange = { numPersonas = it },
+                            label = { Text("¿Para cuántas personas?") },
+                            modifier = Modifier.fillMaxWidth()
                         )
 
-                        val mesasFiltradas = mesas.filter {
-                            (it.capacidad.toIntOrNull() ?: 0) >= cantidad
-                        }
+                        if (cantidad > 0) {
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Text("Mesas disponibles:", style = MaterialTheme.typography.titleMedium)
 
-                        if (mesasFiltradas.isEmpty()) {
-                            Text(stringResource(R.string.no_mesas_capacidad))
-                        } else {
-                            mesasFiltradas.forEach { mesa ->
-                                Card(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(vertical = 4.dp),
-                                    colors = CardDefaults.cardColors(containerColor = Color(0xFFF1F1F1))
-                                ) {
-                                    Column(modifier = Modifier.padding(16.dp)) {
-                                        Text("${stringResource(R.string.mesa)}: ${mesa.nombre}")
-                                        Text("${stringResource(R.string.capacidad)}: ${mesa.capacidad}")
-                                        Spacer(modifier = Modifier.height(8.dp))
-                                        Button(
-                                            onClick = {
-                                                mesaSeleccionada = mesa
-                                                showHoraDialog = true
+                            val mesasFiltradas = mesas.filter {
+                                (it.capacidad.toIntOrNull() ?: 0) >= cantidad
+                            }
+
+                            if (mesasFiltradas.isEmpty()) {
+                                Text("No hay mesas con esa capacidad.")
+                            } else {
+                                mesasFiltradas.forEach { mesa ->
+                                    Card(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(vertical = 4.dp),
+                                        colors = CardDefaults.cardColors(containerColor = Color(0xFFF1F1F1))
+                                    ) {
+                                        Column(modifier = Modifier.padding(16.dp)) {
+                                            Text("Mesa: ${mesa.nombre}")
+                                            Text("Capacidad: ${mesa.capacidad}")
+                                            Spacer(modifier = Modifier.height(8.dp))
+                                            Button(
+                                                onClick = {
+                                                    mesaSeleccionada = mesa
+                                                    showHoraDialog = true
+                                                }
+                                            ) {
+                                                Text("Reservar esta mesa")
                                             }
-                                        ) {
-                                            Text(stringResource(R.string.reservar_esta_mesa))
                                         }
                                     }
                                 }
                             }
                         }
                     }
-                }
-            } ?: Text(stringResource(R.string.no_fecha_seleccionada))
+                } ?: Text("No has seleccionado ninguna fecha aún.")
+            }
         }
 
         // Diálogo para elegir hora
@@ -167,11 +181,11 @@ fun ReservaScreen(
 
             AlertDialog(
                 onDismissRequest = { showHoraDialog = false },
-                title = { Text(stringResource(R.string.selecciona_hora)) },
+                title = { Text("Selecciona una hora") },
                 text = {
                     Column {
                         if (horasFiltradas.isEmpty()) {
-                            Text(stringResource(R.string.no_horas_disponibles))
+                            Text("No hay horas disponibles para esta mesa.")
                         } else {
                             horasFiltradas.forEach { hora ->
                                 TextButton(onClick = {
@@ -179,16 +193,14 @@ fun ReservaScreen(
                                         Reserva(
                                             mesa = mesaSeleccionada!!.id,
                                             fecha = fecha.toString(),
-                                            hora = hora
+                                            hora = hora,
+                                            cliente = nombreCliente
                                         )
                                     )
+
                                     Toast.makeText(
                                         context,
-                                        context.getString(
-                                            R.string.toast_confirmacion_reserva,
-                                            hora,
-                                            mesaSeleccionada!!.nombre
-                                        ),
+                                        "Reserva confirmada para las $hora en la mesa ${mesaSeleccionada!!.nombre}",
                                         Toast.LENGTH_SHORT
                                     ).show()
 
@@ -204,14 +216,13 @@ fun ReservaScreen(
                 confirmButton = {},
                 dismissButton = {
                     TextButton(onClick = { showHoraDialog = false }) {
-                        Text(stringResource(R.string.cancelar))
+                        Text("Cancelar")
                     }
                 }
             )
         }
     }
 }
-
 
 
 

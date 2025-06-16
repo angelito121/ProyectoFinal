@@ -70,9 +70,16 @@ fun GestionarReservasScreen(
                             colors = CardDefaults.cardColors(containerColor = Color(0xFFF6F6F6))
                         ) {
                             Column(modifier = Modifier.padding(12.dp)) {
+                                Text("${stringResource(R.string.etiqueta_cliente)} ${reserva.cliente}")
                                 Text("${stringResource(R.string.etiqueta_mesa)} ${reserva.mesa}")
                                 Text("${stringResource(R.string.etiqueta_fecha)} ${reserva.fecha}")
-                                Text("${stringResource(R.string.etiqueta_hora)} ${reserva.hora.format(DateTimeFormatter.ofPattern("HH:mm"))}")
+                                Text(
+                                    "${stringResource(R.string.etiqueta_hora)} ${
+                                        reserva.hora.format(
+                                            DateTimeFormatter.ofPattern("HH:mm")
+                                        )
+                                    }"
+                                )
 
                                 Spacer(modifier = Modifier.height(8.dp))
 
@@ -90,5 +97,6 @@ fun GestionarReservasScreen(
         }
     }
 }
+
 
 

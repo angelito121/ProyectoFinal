@@ -8,5 +8,6 @@ data class Reserva(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val mesa: Int,
     val fecha: String,
-    val hora: String
+    val hora: String,
+    val cliente:String
 )
